@@ -8,9 +8,10 @@ y_axis = lines[0].strip().split('\t')[0:]
 data = []
 for index, line in enumerate(lines[1:]):
     x, values = line.strip().split('\t', 1)
+    values = values.split('\t')
     for i, v in enumerate(values):
         if v:
-            data.append({'d': 86,'x': int(x), 'y': int(y_axis[i+1]), 'value': int(v)})
+            data.append({'d': 100,'x': int(x), 'y': int(y_axis[i]), 'value': int(v)})
 
 # 生成 JSON 数组
 json_data = json.dumps(data, indent=4)
