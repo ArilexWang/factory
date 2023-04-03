@@ -1,10 +1,22 @@
 
 <template>
   <div>
-    <el-input v-model="num1" placeholder="请输入D"></el-input>
-    <el-input v-model="num2" placeholder="请输入X"></el-input>
-    <el-input v-model="num3" placeholder="请输入Y"></el-input>
-    <el-input v-model="num4" placeholder="请输入件数"></el-input>
+    <div class="row">
+      <span style="margin-right: 5px;">D : </span>
+      <el-input v-model="num1" placeholder="请输入D"></el-input>
+    </div>
+    <div class="row">
+      <span style="margin-right: 5px;">X : </span>
+      <el-input v-model="num2" placeholder="请输入X"></el-input>
+    </div>
+    <div class="row">
+      <span style="margin-right: 5px;">Y : </span>
+      <el-input v-model="num3" placeholder="请输入Y"></el-input>
+    </div>
+    <div class="row">
+      <span style="margin-right: 5px;">件数: </span>
+      <el-input v-model="num4" placeholder="请输入件数"></el-input>
+    </div>
     <el-button @click="calculateSum" type="primary">计算</el-button>
     <div>
       <span>单件价格: {{ sum }}</span>
@@ -27,27 +39,29 @@ const sum = ref(0)
 const salary = ref(0)
 
 const DArr = [0, 30, 50, 70, 85, 100]
-const XArr = [120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540]
-const YArr = [120, 150, 180, 210, 240, 270, 300, 330, 360]
+const XArr = [120, 150, 180, 210, 240, 270, 300, 330, 360]
+const YArr = [120, 150, 180, 210, 240, 270, 300, 330, 360, 390, 420, 450, 480, 510, 540]
 
 const calculateSum = () => {
   const D = Number(num1.value);
   const X = Number(num2.value);
   const Y = Number(num3.value);
   const count = Number(num4.value);
-  console.log('aaaaa')
   const actualD = findIndex(DArr, D)
   const actualX = findIndex(XArr, X)
   const actualY = findIndex(YArr, Y)
   console.log('实际D', actualD, '实际X', actualX, 'Y', actualY)
-  console.log(tables)
   // 在tables中查找元素
   const result = tables.find(item => item.d === actualD && item.x === actualX && item.y === actualY);
   if (result) {
-    console.log(result)
     sum.value = result.value;
+    salary.value = sum.value * count * 0.7 * 0.05
+    // salary.value 保留两位小数
+    salary.value = Math.round(salary.value * 1000) / 1000
+  } else {
+    sum.value = 0
+    salary.value = 0
   }
-  salary.value = sum.value * count * 0.7 * 0.05
 };
 
 const findIndex = (nums: number[], num: number): number => {
@@ -68,13 +82,18 @@ const findIndex = (nums: number[], num: number): number => {
       left = mid + 1;
     }
   }
-  console.log('aaa', nums[1])
   return nums[left];
 }
 
 </script>
 
 <style scoped>
+.row {
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
+}
+
 header {
   line-height: 1.5;
 }
