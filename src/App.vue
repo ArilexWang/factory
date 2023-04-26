@@ -3,19 +3,19 @@
   <div>
     <div class="row">
       <span style="margin-right: 5px;">D : </span>
-      <el-input v-model="num1" placeholder="请输入D"></el-input>
+      <el-input v-model="num1" placeholder="请输入D" @keydown.enter="handleEnter($event, input2)"></el-input>
     </div>
     <div class="row">
       <span style="margin-right: 5px;">X : </span>
-      <el-input v-model="num2" placeholder="请输入X"></el-input>
+      <el-input ref="input2" v-model="num2" placeholder="请输入X" @keydown.enter="handleEnter($event, input3)"></el-input>
     </div>
     <div class="row">
       <span style="margin-right: 5px;">Y : </span>
-      <el-input v-model="num3" placeholder="请输入Y"></el-input>
+      <el-input ref="input3" v-model="num3" placeholder="请输入Y" @keydown.enter="handleEnter($event, input4)"></el-input>
     </div>
     <div class="row">
       <span style="margin-right: 5px;">件数: </span>
-      <el-input v-model="num4" placeholder="请输入件数"></el-input>
+      <el-input ref="input4" v-model="num4" placeholder="请输入件数" @keydown.enter="calculateSum"></el-input>
     </div>
     <el-button @click="calculateSum" type="primary">计算</el-button>
     <div>
@@ -28,8 +28,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import { tables } from './stores/table'
+const input2 = ref(null);
+const input3 = ref(null);
+const input4 = ref(null);
+const input5 = ref(null);
+
+const handleEnter = (event: null | { preventDefault: () => void; }, input: null | { focus: () => void; }) => {
+  event!.preventDefault();
+
+  nextTick(() => {
+    if (input) {
+      input.focus();
+    }
+  });
+};
 
 const num1 = ref('')
 const num2 = ref('')
