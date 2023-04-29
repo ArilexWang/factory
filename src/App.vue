@@ -3,19 +3,23 @@
   <div>
     <div class="row">
       <span style="margin-right: 5px;">D : </span>
-      <el-input v-model="num1" placeholder="请输入D" @keydown.enter="handleEnter($event, input2)"></el-input>
+      <el-input ref="input1" v-model="num1" placeholder="请输入D" @keydown.enter="handleEnter($event, input2, 'D')">
+      </el-input>
     </div>
     <div class="row">
       <span style="margin-right: 5px;">X : </span>
-      <el-input ref="input2" v-model="num2" placeholder="请输入X" @keydown.enter="handleEnter($event, input3)"></el-input>
+      <el-input ref="input2" v-model="num2" placeholder="请输入X" @keydown.enter="handleEnter($event, input3, 'X')">
+      </el-input>
     </div>
     <div class="row">
       <span style="margin-right: 5px;">Y : </span>
-      <el-input ref="input3" v-model="num3" placeholder="请输入Y" @keydown.enter="handleEnter($event, input4)"></el-input>
+      <el-input ref="input3" v-model="num3" placeholder="请输入Y" @keydown.enter="handleEnter($event, input4, 'Y')">
+      </el-input>
     </div>
     <div class="row">
       <span style="margin-right: 5px;">件数: </span>
-      <el-input ref="input4" v-model="num4" placeholder="请输入件数" @keydown.enter="calculateSum"></el-input>
+      <el-input ref="input4" v-model="num4" placeholder="请输入件数" @keydown.enter="handleEnter($event, input1, 'Count')">
+      </el-input>
     </div>
     <el-button @click="calculateSum" type="primary">计算</el-button>
     <div>
@@ -30,17 +34,21 @@
 <script setup lang="ts">
 import { nextTick, ref } from 'vue';
 import { tables } from './stores/table'
+const input1 = ref(null);
 const input2 = ref(null);
 const input3 = ref(null);
 const input4 = ref(null);
-const input5 = ref(null);
 
-const handleEnter = (event: null | { preventDefault: () => void; }, input: null | { focus: () => void; }) => {
+const handleEnter = (event: null | { preventDefault: () => void; }, input: any, key: string) => {
   event!.preventDefault();
-
   nextTick(() => {
-    if (input) {
+    if (input && key !== 'Count') {
       input.focus();
+      input.select()
+    } else if (key === 'Count') {
+      calculateSum()
+      input.focus()
+      input.select()
     }
   });
 };
